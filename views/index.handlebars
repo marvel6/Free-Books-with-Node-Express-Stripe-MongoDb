@@ -1,0 +1,32 @@
+<section class="py-2">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            
+            <h1 class="display-3 mt-3 pt-3">
+                My E-book Store
+            </h1><p class="lead">
+                Do you want to get some Intresting Books
+            </p>
+            <form action="/charge" method="POST">
+        <script
+          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="{{Publishablekey}}"
+          data-amount="2500"
+          data-name="Web Development Ebook"
+          data-description="Ebook"
+          data-image="/img/books.png"
+          data-locale="auto">
+        </script>
+        <script>
+            document.getElementsByClassName('stripe-button-el')[0].style.display = 'none'
+        </script>
+        
+        <button type="submit" class="btn btn-secondary btn-sm btn-dark">Purchase E-book</button>
+      </form>
+              
+        </div>
+    <div class="col-md-4">
+        <img src="/img/book.png" alt="" class="img-fluid">
+    </div>
+    </div>
+</section>
