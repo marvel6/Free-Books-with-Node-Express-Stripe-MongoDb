@@ -49,7 +49,7 @@ userSchema.pre('save', async function(){
 
 
 userSchema.methods.compare =  async function(password){
-  const verifyPassword = await bcrypt.compare(this.password,password)
+  const verifyPassword = await bcrypt.compare(password,this.password)
   return verifyPassword
 }
 

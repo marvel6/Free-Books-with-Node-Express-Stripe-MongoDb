@@ -55,9 +55,11 @@ const tokenModel = require('../model/tokenModel')
 
                         const tokenUser = createUser(user)
 
-                        const refreshTokens = ''
+                        let refreshTokens = ''
 
                         refreshTokens = crypto.randomBytes(35).toString('hex')
+
+
 
                         const checkTokenModel = await tokenModel.findOne({user:user._id})
 
@@ -77,18 +79,33 @@ const tokenModel = require('../model/tokenModel')
                         const ip = req.ip
                         const userAgent = req.headers['user-agent']
 
-                        const tokenContent = {ip,userAgent,refreshTokens,user:user._id}
+                        const tokenContent = {ip,userAgent,refreshToken:refreshTokens,user:user._id}
 
                         await tokenModel.create(tokenContent)
 
                         attachCookiesToResponse({res,user:tokenUser,refreshToken:refreshTokens})
                         
-                    res.status(StatusCodes.OK).json(responses({msg:'Welcome, you logged in',data:tokenUser}))
+                       res.status(StatusCodes.OK).json(responses({msg:'Welcome, you logged in',data:tokenUser}))
                     }
 
 
                     const log = async (req,res) =>{
-                        await tokenModel.findOneAndDelete(req.user.userId)
+                        await tokenModel.findOneAndDelete({user:req.user.userId})
+
+                        res.cookie('accessToken','logout',{
+                            httpOnly:true,
+                            expires:new Date(Date.now()),
+    
+                        })
+
+
+                        res.cookie('refreshToken','logout',{
+                            httpOnly:true,
+                            expires:new Date(Date.now()),
+                            
+                        })
+                        
+                        res.status(StatusCodes.OK).json(responses({msg:'User logged out'}))
                     }
 
 
@@ -96,5 +113,6 @@ const tokenModel = require('../model/tokenModel')
 
                     module.exports = {
                         registerUser,
-                        loginUser
+                        loginUser,
+                        log
                     }
