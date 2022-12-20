@@ -1,31 +1,58 @@
 const customError = require('../error')
-const {StatusCodes} = require('http-status-codes')
-const cloudinary = require('../utils/cloudinary')
+const { StatusCodes } = require('http-status-codes')
+const cloudinary = require('cloudinary').v2
+const File = require('../model/cloudinaryModel')
+const fs = require('fs')
+const {responses} = require('../Response/response')
 
+const sendFile = async (req, res) => {
+   
 
-const sendFile = async(req,res) =>{
-    const post = req.body
+    const post = req.body.name
 
-}
-
-
-const getAllfile = async(req,res) =>{
-
-}
-
-
-const getSingleFiles = async(res,res) =>{
-
-}
-
-
-const updateSingleFile = async(req,res) =>{
-
-}
-
-
-const deleteSingleFile = async(req,res) =>{
+    if(req.files){
+        const result = await cloudinary.uploader.upload(req.files.image.tempFilePath,{
+            use_filename:true,
+            folder:'E-books',
+        })
+        fs.unlinkSync(req.files.image.tempFilePath)
     
+    const user = new File({
+        name:post,
+        avatar:result.secure_url,
+        cloud_id:result.public_id,
+        user:req.user.userId
+    })
+
+     await user.save()
+
+     console.log(result)
+
+     res.status(StatusCodes.OK).json(responses({msg:'File have been uploaded',data:user.avatar},))
+
+    }
+    
+}
+
+
+const getAllfile = async (req, res) => {
+
+   
+}
+
+
+const getSingleFiles = async (req, res) => {
+
+}
+
+
+const updateSingleFile = async (req, res) => {
+
+}
+
+
+const deleteSingleFile = async (req, res) => {
+
 }
 
 

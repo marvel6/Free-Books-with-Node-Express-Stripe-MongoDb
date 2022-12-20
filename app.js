@@ -27,12 +27,23 @@ const morgan = require('morgan')
 
     const routerPayment = require('./Router/router')
     const userRouter = require('./Router/userRoute')
+    const uploadRouter = require('./Router/uploadRoute')
 
     const keys = require('./config/keys')
     const connectDb = require('./db/connect')
 
     const fileUpload = require('express-fileupload')
     const cookieParser = require('cookie-parser')
+
+
+    const cloudinary = require('cloudinary').v2;
+    cloudinary.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.CLOUD_API_KEY,
+      api_secret: process.env.CLOUD_API_SECRET,
+    });
+    
+
 
     app.use(cookieParser(process.env.JWT_SECRET))
     app.use(fileUpload({useTempFiles:true}))
@@ -41,6 +52,7 @@ const morgan = require('morgan')
 
     app.use('/api/v1/auth',routerPayment)  //routes
     app.use('/api/v1/auth',userRouter)
+    app.use('/api/v1/auth',uploadRouter)
 
 
 

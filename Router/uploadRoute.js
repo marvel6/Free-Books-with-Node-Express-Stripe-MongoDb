@@ -11,7 +11,7 @@ const {
 } = require('../controller/uploader')
 
 
-    const {AuthenticateUser,checkPermission} = require('../middlewares/athenticateMiddleware')
+    const {AuthenticateUser,checkPermission} = require('../middlewares/athenticateMiddleware')  //middlewares
 
     router.route('/').get(AuthenticateUser,getAllfile)
 
@@ -20,7 +20,7 @@ const {
     router.route('/:id').get(AuthenticateUser,getSingleFiles)
 
     router.route('/:id').patch(AuthenticateUser,updateSingleFile)
-    router.route('/:id').delete(AuthenticateUser,checkPermission,deleteSingleFile)
+    router.route('/:id').delete(AuthenticateUser,checkPermission("admin"),deleteSingleFile)
 
 
     module.exports = router
