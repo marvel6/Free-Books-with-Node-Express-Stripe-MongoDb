@@ -1,6 +1,6 @@
 const customError = require('../error')
 const { StatusCodes } = require('http-status-codes')
-const cloudinary = require('cloudinary').v2
+const cloudinary = require('../utils/cloudinary')
 const File = require('../model/cloudinaryModel')
 const fs = require('fs')
 const {responses} = require('../Response/response')
@@ -26,7 +26,6 @@ const sendFile = async (req, res) => {
 
      await user.save()
 
-     console.log(result)
 
      res.status(StatusCodes.OK).json(responses({msg:'File have been uploaded',data:user.avatar},))
 
