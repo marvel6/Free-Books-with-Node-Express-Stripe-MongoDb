@@ -20,7 +20,8 @@ const {
     router.route('/:id').get(AuthenticateUser,getSingleFiles)
 
     router.route('/:id').patch(AuthenticateUser,updateSingleFile)
-    router.route('/:id').delete(AuthenticateUser,checkPermission("admin"),deleteSingleFile)
+    
+    router.route('/:id').delete([AuthenticateUser,checkPermission("admin")],deleteSingleFile)
 
 
     module.exports = router

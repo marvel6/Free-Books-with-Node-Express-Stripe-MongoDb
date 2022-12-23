@@ -12,6 +12,7 @@ const morgan = require('morgan')
     app.set('view engine' , 'handlebars')
 
     const NotFoundError = require('./middlewares/notFountError')
+    const errorHandlerMiddleware = require('./middlewares/errorHandler')
 
 
     //bodyParser  middleware
@@ -28,6 +29,7 @@ const morgan = require('morgan')
     const routerPayment = require('./Router/router')
     const userRouter = require('./Router/userRoute')
     const uploadRouter = require('./Router/uploadRoute')
+    const userSetting = require('./Router/settings')
 
     const keys = require('./config/keys')
     const connectDb = require('./db/connect')
@@ -47,12 +49,13 @@ const morgan = require('morgan')
     app.use('/api/v1/auth',routerPayment)  //routes
     app.use('/api/v1/auth',userRouter)
     app.use('/api/v1/auth',uploadRouter)
+    app.use('/api/v1/auth',userSetting)
 
 
 
-    app.use(NotFoundError)   //error middleware
+    app.use(NotFoundError)          //Error handleMiddlewares
+    app.use(errorHandlerMiddleware)
 
-    //index page
 
     app.get('/',(req,res)=>{
 
