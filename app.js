@@ -34,15 +34,13 @@ const morgan = require('morgan')
     const keys = require('./config/keys')
     const connectDb = require('./db/connect')
 
-    const fileUpload = require('express-fileupload')
+   
     const cookieParser = require('cookie-parser')
 
 
-    
-
 
     app.use(cookieParser(process.env.JWT_SECRET))
-    app.use(fileUpload({useTempFiles:true}))
+    
     
 
 

@@ -6,7 +6,7 @@ const userUploads = new mongoose.Schema({
     name:{type:String,required:true},
     level:{type:String},
     avatar:{type:String,default:'/uploads'},
-    user:{type:mongoose.Types.ObjectId,ref:'user',required:true}
+    user:{type:mongoose.Types.ObjectId,ref:'user',required:false}
 })
 
 
