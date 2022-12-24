@@ -17,14 +17,13 @@ const sendFile = async (req, res) => {
             folder: 'E-books'
         })
 
-        const user = await File.findOne({ user: req.user.userId }).exec()
-
-        user.cloud_id = result.public_id
-        user.name = req.body.name
-        user.level = req.body.level
-        user.avatar = result.secure_url
-        user.user = req.user.userId
-
+        const user = new File({
+            cloud_id:result.public_id,
+            name:req.body.name,
+            level:req.body.level,
+            avatar:result.secure_url,
+            user:req.user.userId
+        })
 
         await user.save()
 
@@ -71,6 +70,31 @@ const getSingleFiles = async (req, res) => {
 
 const updateSingleFile = async (req, res) => {
 
+    try {
+        let user = await File.findById(req.params.id)
+
+        await cloudinary.uploader.destroy(user.cloud_id)
+        
+        const result = await cloudinary.uploader.upload(req.file.path,{
+            use_filename: true,
+            folder: 'E-books'
+        })
+
+        const data = {
+            name:req.body.name,
+            avatar:result.public_id,
+            cloud_id:result.public_id,
+            level:req.body.level
+        }
+
+        user = await File.findByIdAndUpdate(req.params.id, data , {new:true,runValidators:true})
+
+        res.status(StatusCodes.OK).json(responses({msg:'Hurray your file have been updated successfully',data:user}))
+        
+    } catch (error) {
+        res.status(StatusCodes.OK).json(responses({ msg: 'Looks like something went wrong', data: error.message }))
+    }
+
 
 
 
@@ -79,7 +103,19 @@ const updateSingleFile = async (req, res) => {
 
 const deleteSingleFile = async (req, res) => {
 
-
+        try {
+            let user = await File.findById(req.params.id)
+        
+            await cloudinary.uploader.destroy(user.cloud_id)
+        
+            await user.remove()
+        
+            res.status(StatusCodes.OK).json(responses({msg:'Hurray your file have been deleted',data:user}))
+            
+         } catch (error) {
+            console.log(error)
+           res.status(StatusCodes.BAD_REQUEST).json(responses({msg:'Looks like something went wrong'}))  
+         }
 
 
 }

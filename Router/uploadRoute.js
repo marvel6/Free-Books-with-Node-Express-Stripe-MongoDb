@@ -20,7 +20,7 @@ router.route('/sendfile').post(AuthenticateUser, upload.single("image"), sendFil
 
 router.route('/:id').get(AuthenticateUser, getSingleFiles)
 
-router.route('/:id').patch(AuthenticateUser, updateSingleFile)
+router.route('/:id').patch(AuthenticateUser, upload.single("image"), updateSingleFile)
 
 router.route('/:id').delete([AuthenticateUser, checkPermission("admin")], deleteSingleFile)
 

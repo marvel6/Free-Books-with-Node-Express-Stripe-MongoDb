@@ -2,10 +2,10 @@ const mongoose = require('mongoose')
 
 
 const userUploads = new mongoose.Schema({
-    cloud_id:{type:String,required:true},
+    cloud_id:{type:String},
     name:{type:String,required:true},
     level:{type:String},
-    avatar:{type:String,default:'/uploads'},
+    avatar:{type:String},
     user:{type:mongoose.Types.ObjectId,ref:'user',required:false}
 })
 
